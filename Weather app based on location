@@ -1,0 +1,38 @@
+import requests
+
+# define the API endpoint and your API key
+url = "https://api.openweathermap.org/data/2.5/weather"
+api_key = "YOUR_API_KEY_HERE"
+
+# take user input for the location
+city = input("Enter city name: ")
+country_code = input("Enter country code (e.g. US): ")
+
+# make a GET request to the API
+response = requests.get(url, params={
+    "q": f"{city},{country_code}",
+    "appid": api_key,
+    "units": "metric"
+})
+
+# check if the request was successful
+if response.status_code == 200:
+    # parse the JSON data from the response
+    data = response.json()
+
+    # extract the relevant weather data
+    weather_description = data["weather"][0]["description"]
+    temperature = data["main"]["temp"]
+    feels_like = data["main"]["feels_like"]
+    humidity = data["main"]["humidity"]
+    wind_speed = data["wind"]["speed"]
+
+    # print the weather data to the console
+    print(f"Current weather in {city}, {country_code}:")
+    print(f"Description: {weather_description}")
+    print(f"Temperature: {temperature}°C")
+    print(f"Feels like: {feels_like}°C")
+    print(f"Humidity: {humidity}%")
+    print(f"Wind speed: {wind_speed} m/s")
+else:
+    print("An error occurred while fetching weather data.")
