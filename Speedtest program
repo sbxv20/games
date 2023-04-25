@@ -1,0 +1,30 @@
+import speedtest
+import smtplib
+import webbrowser
+
+# define the email sender and recipient
+sender_email = "YOUR_SENDER_EMAIL_HERE"
+sender_password = "YOUR_SENDER_EMAIL_PASSWORD_HERE"
+recipient_email = "SERVICE_PROVIDER_EMAIL_HERE"
+
+# create a Speedtest object and test the internet speed
+speed_test = speedtest.Speedtest()
+download_speed = speed_test.download() / 1000000  # convert from bps to Mbps
+
+# check if the speed is slow
+if download_speed < 10:
+    # create an email message
+    message = f"Subject: Internet Speed Alert\n\nDear Service Provider,\n\nOur internet speed is currently {download_speed:.2f} Mbps, which is slower than expected. Please take appropriate action to resolve this issue.\n\nThank you,\nYour Customer"
+
+    # send the email using SMTP
+    with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
+        smtp.starttls()
+        smtp.login(sender_email, sender_password)
+        smtp.sendmail(sender_email, recipient_email, message)
+
+    print("An email has been sent to the service provider.")
+else:
+    # play videos in YouTube
+    webbrowser.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+
+    print("Enjoy your fast internet speed!")
