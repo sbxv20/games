@@ -1,0 +1,19 @@
+import datetime
+import pytz
+
+# define the timezones you want to display
+timezones = {
+    'New York': 'America/New_York',
+    'Los Angeles': 'America/Los_Angeles',
+    'London': 'Europe/London',
+    'Tokyo': 'Asia/Tokyo'
+}
+
+# get the current time in UTC
+utc_time = datetime.datetime.now(pytz.utc)
+
+# print the current time in each timezone
+for city, timezone in timezones.items():
+    tz = pytz.timezone(timezone)
+    local_time = utc_time.astimezone(tz)
+    print(f"{city}: {local_time.strftime('%I:%M:%S %p')} {local_time.tzname()}")
