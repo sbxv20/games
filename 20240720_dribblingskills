@@ -1,0 +1,16 @@
+import time
+
+def dribbling_skill():
+    print("Let's practice a dribbling skill!")
+    time.sleep(1)
+
+    dribble_count = 0
+    while dribble_count < 10:
+        print("Dribble...")  # Simulating dribbling action
+        time.sleep(0.5)
+        dribble_count += 1
+
+    print("\nYou've completed 10 dribbles!")
+
+if __name__ == "__main__":
+    dribbling_skill()
