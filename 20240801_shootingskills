@@ -1,0 +1,53 @@
+import datetime
+import pandas as pd
+
+# Function to log a shooting session
+def log_shooting_session(date, shots_taken, shots_made):
+    # Create a dictionary to hold the session data
+    session_data = {
+        "Date": [date],
+        "Shots Taken": [shots_taken],
+        "Shots Made": [shots_made],
+        "Shooting Percentage": [shots_made / shots_taken * 100 if shots_taken > 0 else 0]
+    }
+    # Convert the dictionary to a DataFrame
+    df = pd.DataFrame(session_data)
+    
+    # Save the DataFrame to a CSV file
+    try:
+        df_existing = pd.read_csv('shooting_sessions.csv')
+        df_combined = pd.concat([df_existing, df], ignore_index=True)
+    except FileNotFoundError:
+        df_combined = df
+    
+    df_combined.to_csv('shooting_sessions.csv', index=False)
+    print(f"Session logged: {date}, {shots_taken} shots taken, {shots_made} shots made, {df_combined.iloc[-1]['Shooting Percentage']:.2f}% shooting percentage")
+
+# Function to analyze shooting performance
+def analyze_performance():
+    try:
+        df = pd.read_csv('shooting_sessions.csv')
+        avg_percentage = df['Shooting Percentage'].mean()
+        total_shots_taken = df['Shots Taken'].sum()
+        total_shots_made = df['Shots Made'].sum()
+        overall_percentage = total_shots_made / total_shots_taken * 100 if total_shots_taken > 0 else 0
+        
+        print(f"Average Shooting Percentage: {avg_percentage:.2f}%")
+        print(f"Total Shots Taken: {total_shots_taken}")
+        print(f"Total Shots Made: {total_shots_made}")
+        print(f"Overall Shooting Percentage: {overall_percentage:.2f}%")
+        
+        return avg_percentage, overall_percentage
+    
+    except FileNotFoundError:
+        print("No data found. Please log some shooting sessions first.")
+        return None, None
+
+# Example usage
+if __name__ == "__main__":
+    # Log a new shooting session
+    today = datetime.date.today()
+    log_shooting_session(today, shots_taken=50, shots_made=20)
+    
+    # Analyze performance
+    analyze_performance()
